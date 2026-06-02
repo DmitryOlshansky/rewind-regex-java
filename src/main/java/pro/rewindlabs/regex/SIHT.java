@@ -3,17 +3,17 @@ package pro.rewindlabs.regex;
 import java.util.Arrays;
 
 public class SIHT {
-    long[] keys;
-    long[] values;
-    int mask, items, pow2;
+    private long[] keys;
+    private long[] values;
+    private int mask, items, pow2;
     
-    static final long mul = 0x9E3779B97F4A7C15L;
+    private static final long mul = 0x9E3779B97F4A7C15L;
 
-    static boolean isPow2(long size) {
+    private static boolean isPow2(long size) {
         return (size & (size-1)) == 0;
     }
 
-    static long hash(long x, int n) {
+    private static long hash(long x, int n) {
         return (x * mul) >>> (64 - n);
     }
 
@@ -28,7 +28,7 @@ public class SIHT {
         pow2 = Integer.numberOfTrailingZeros(size);
     }
 
-    void put(long key, long value) {
+    public void put(long key, long value) {
         if (2 * items >= keys.length) rehash();
         int h = (int)hash(key, pow2);
         for (;;) {
@@ -42,7 +42,7 @@ public class SIHT {
         }
     }
 
-    long get(long key) {
+    public long get(long key) {
         int h = (int)hash(key, pow2);
         for (;;) {
             if (keys[h] == key) {
@@ -55,7 +55,7 @@ public class SIHT {
         }
     }
 
-    void rehash() {
+    private void rehash() {
         var siht = new SIHT(keys.length*2);
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] != -1) {
